@@ -1,4 +1,4 @@
-<?php require_once('/var/www/html/admin-secretaria/app/views/templates/menu.php') ?>
+<?php require_once('../app/views/templates/menu.php') ?>
 <main class="main-content">
 
 
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <?php require_once('/var/www/html/admin-secretaria/app/views/aluno/lista.php') ?>
+        <?php require_once('../app/views/aluno/lista.php') ?>
 
     <?php endif ?>
 
