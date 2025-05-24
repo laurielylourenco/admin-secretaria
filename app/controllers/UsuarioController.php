@@ -29,7 +29,9 @@ class UsuarioController extends Controller
             if($email === "laurielylourenco@gmail.com"  && $senha === '123' ){
                 $_SESSION['usuario'] = ["nome" => "Lauriely", "email" => "laurielylourenco@gmail.com"] ;
 
-                $this->view('home');
+                //$this->view('home');
+
+                header("Location: ". URL_BASE);
             } else {
                 $this->view('usuario/login', ['erro' => 'Email ou senha inválidos']);
             }
@@ -41,6 +43,7 @@ class UsuarioController extends Controller
     public function logout()
     {
         session_destroy();
-        $this->view('usuario/login');
+        header("Location: ". URL_BASE);
+      
     }
 }

@@ -31,7 +31,7 @@ class App
 
     private function parseUrl()
     {
-        
+
         if (isset($_GET['url'])) {
 
 
@@ -58,6 +58,14 @@ class App
 
         if (isset($_GET['usuario']) && ($_GET['usuario'] === 'logout')) {
             return ['Usuario', 'logout'];
+        }
+
+        if (isset($_GET['aluno']) && ($_GET['aluno'] === 'lista')) {
+            return ['Aluno', 'index'];
+        }
+
+        if (isset($_GET['aluno']) && ($_GET['aluno'] === 'criar')) {
+            return ['Aluno', 'criar'];
         }
 
         return [];
