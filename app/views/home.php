@@ -7,7 +7,7 @@
         <div class="main-header">
             <div>
                 <div class="page-title">Aluno</div>
-                <h4>Alunos cadastrados</h4>
+                <h4>Módulo de aluno</h4>
             </div>
             <div>
                 <a href="<?= URL_BASE ?>?aluno=criar" class="btn btn-outline-secondary btn-sm me-2">
@@ -15,9 +15,6 @@
                     Novo Aluno
                 </a>
             </div>
-
-
-
         </div>
 
         <?php require_once('/var/www/html/admin-secretaria/app/views/aluno/lista.php') ?>

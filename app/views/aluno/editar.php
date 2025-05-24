@@ -9,7 +9,7 @@ $cpfValor = isset($aluno_update['cpf']) ? htmlspecialchars($aluno_update['cpf'])
 $emailValor = isset($aluno_update['email']) ? htmlspecialchars($aluno_update['email']) : '';
 ?>
 
-<div class="container">
+<div class="container-fluid">
 
     <main class="main-content mb-4">
         <div class="main-header d-flex justify-content-between align-items-center py-3 border-bottom mb-3">

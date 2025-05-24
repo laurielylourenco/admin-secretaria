@@ -58,6 +58,8 @@ class AlunoController extends Controller
             $email = (string) filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $senha = (string) $_POST['senha'];
             $aluno = $this->alunoModel->buscarSenhaById($id);
+            $aluno_e = $this->alunoModel->buscarAlunoById($id);
+
 
             if ($aluno && empty($senha)) {
                 $senha = $aluno['senha'];
@@ -65,33 +67,33 @@ class AlunoController extends Controller
 
             if (!isset($nome) || strlen($nome) < 3) {
 
-                return  $this->view('aluno/editar', ['erro' => 'Nome precisa ter mais de 3 letras']);
+                return  $this->view('aluno/editar', ['erro' => 'Nome precisa ter mais de 3 letras', 'aluno_update' => $aluno_e]);
             }
             if (empty($id)) {
-                return $this->view('aluno/editar', ['erro' => 'ID precisa ser enviado!']);
+                return $this->view('aluno/editar', ['erro' => 'ID precisa ser enviado!', 'aluno_update' => $aluno_e]);
             }
 
             if (empty($data_nascimento)) {
-                return $this->view('aluno/editar', ['erro' => 'Data de nascimento precisa ser enviada!']);
+                return $this->view('aluno/editar', ['erro' => 'Data de nascimento precisa ser enviada!', 'aluno_update' => $aluno_e]);
             }
 
             if ($data_nascimento == date('Y-m-d')) {
-                return $this->view('aluno/editar', ['erro' => 'Data de nascimento precisa ser diferente da data atual!']);
+                return $this->view('aluno/editar', ['erro' => 'Data de nascimento precisa ser diferente da data atual!', 'aluno_update' => $aluno_e]);
             }
 
             if (empty($cpf)) {
-                return $this->view('aluno/editar', ['erro' => 'CPF precisa ser enviado!']);
-            } elseif (strlen($cpf) != 11 || !is_numeric($cpf)) {
+                return $this->view('aluno/editar', ['erro' => 'CPF precisa ser enviado!', 'aluno_update' => $aluno_e]);
+            } elseif (!$this->validarCPF($cpf) || !is_numeric($cpf)) {
 
-                return $this->view('aluno/editar', ['erro' => 'CPF inválido!']);
+                return $this->view('aluno/editar', ['erro' => 'CPF inválido!', 'aluno_update' => $aluno_e]);
             }
 
             if (empty($email)) {
-                return $this->view('aluno/editar', ['erro' => 'Email precisa ser enviado!']);
+                return $this->view('aluno/editar', ['erro' => 'Email precisa ser enviado!', 'aluno_update' => $aluno_e]);
             }
 
             if (!$this->isSenhaForte($senha)) {
-                return $this->view('aluno/editar', ['erro' => 'A senha não atende aos critérios de segurança. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos.']);
+                return $this->view('aluno/editar', ['erro' => 'A senha não atende aos critérios de segurança. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos.', 'aluno_update' => $aluno_e]);
             }
 
 
@@ -100,10 +102,12 @@ class AlunoController extends Controller
 
             $this->alunoModel->atualizar($id, $nome, $data_nascimento, $cpf, $email, $senha);
 
-            return $this->view('aluno/editar', ['sucesso' => 'Aluno atualizado com sucesso']);
+            header("Location: " . URL_BASE . "?aluno=lista");
+            exit;
         } catch (\Throwable $th) {
 
-            return $this->view('aluno/editar', ['erro' => 'Erro ao atualizar aluno!']);
+            header("Location: " . URL_BASE . "?aluno=lista");
+            exit;
         }
     }
 
@@ -134,7 +138,7 @@ class AlunoController extends Controller
 
             if (empty($cpf)) {
                 return $this->view('aluno/criar', ['erro' => 'CPF precisa ser enviado!']);
-            } elseif (strlen($cpf) != 11 || !is_numeric($cpf)) {
+            } elseif (!$this->validarCPF($cpf) || !is_numeric($cpf)) {
 
                 return $this->view('aluno/criar', ['erro' => 'CPF inválido!']);
             }
@@ -212,5 +216,28 @@ class AlunoController extends Controller
             substr($cpf, 3, 3) . '.' .
             substr($cpf, 6, 3) . '-' .
             substr($cpf, 9, 2);
+    }
+
+    function validarCPF($cpf)
+    {
+
+        $cpf = preg_replace('/[^0-9]/', '', $cpf);
+        if (strlen($cpf) != 11) return false;
+
+        if (preg_match('/(\d)\1{10}/', $cpf)) return false;
+
+        // Calcula o primeiro dígito verificador
+        for ($t = 9; $t < 11; $t++) {
+            $soma = 0;
+            for ($i = 0; $i < $t; $i++) {
+                $soma += $cpf[$i] * (($t + 1) - $i);
+            }
+            $digito = (10 * $soma) % 11;
+            $digito = ($digito == 10) ? 0 : $digito;
+
+            if ($cpf[$t] != $digito) return false;
+        }
+
+        return true;
     }
 }

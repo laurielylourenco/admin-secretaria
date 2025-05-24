@@ -1,8 +1,7 @@
 <?php require_once('/var/www/html/admin-secretaria/app/views/templates/menu.php') ?>
 
 
-
-<div class="container">
+<div class="container-fluid">
 
     <main class="main-content mb-4">
         <div class="main-header d-flex justify-content-between align-items-center py-3 border-bottom mb-3">

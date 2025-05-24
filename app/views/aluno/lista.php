@@ -1,6 +1,9 @@
+
+<div class="container-fluid">
+
 <h2 class="mb-3">👩‍🎓 Alunos Cadastrados</h2>
 <div class="table-responsive">
-    <table class="table table-striped table-hover">
+    <table id="tabelaAlunos" class="table table-striped table-hover">
         <thead class="table-dark">
             <tr>
                 <th>Nome</th>
@@ -19,12 +22,9 @@
                         <td><?= htmlspecialchars($aluno['cpf']) ?></td>
                         <td><?= htmlspecialchars($aluno['email']) ?></td>
                         <td class="text-center">
-
                             <a href="<?= URL_BASE ?>?aluno=editar&id_aluno=<?= $aluno['id'] ?? '' ?>" class="btn btn-warning btn-sm me-1">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
-                           
-
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" data-aluno-id="<?= $aluno['id'] ?? '' ?>" data-aluno-nome="<?= htmlspecialchars($aluno['nome'] ?? '') ?>">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
@@ -60,4 +60,6 @@
             </div>
         </div>
     </div>
+</div>
+
 </div>
