@@ -106,13 +106,13 @@
 
      <ul class="nav nav-pills flex-column">
          <li class="nav-item">
-             <a href="#" class="nav-link" aria-current="page">
+             <a href="<?= URL_BASE ?>" class="nav-link" aria-current="page">
                  <i class="bi bi-house-door-fill"></i>
                  Home
              </a>
          </li>
          <li class="nav-item">
-             <a href="#" class="nav-link active">
+             <a href="<?= URL_BASE ?>?matricula=lista" class="nav-link active">
                  <i class="bi bi-card-checklist"></i>
                  Matrícula
              </a>

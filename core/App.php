@@ -84,12 +84,16 @@ class App
             return ['Aluno', 'atualizar'];
         }
 
-        if (isset($_POST['turma']) && ($_POST['turma'] === 'lista')) {
-            return ['Turma', 'lista'];
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'lista')) {
+            return ['Turma', 'index'];
+        }
+
+        if (isset($_GET['matricula']) && ($_GET['matricula'] === 'lista')) {
+            return ['Matricula', 'index'];
         }
 
 
-        
+
         return [];
     }
 }

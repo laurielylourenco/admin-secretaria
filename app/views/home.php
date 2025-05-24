@@ -22,16 +22,54 @@
     <?php endif ?>
 
 
-    <?php if (!isset($aluno)): ?>
+    <?php if (isset($turma)): ?>
+
         <div class="main-header">
             <div>
-                <div class="page-title">Overview</div>
-                <h4>Vertical layout</h4>
+                <div class="page-title">Turma</div>
+                <h4>Módulo de turma</h4>
             </div>
             <div>
-                <button class="btn btn-outline-secondary btn-sm me-2">New view</button>
-                <button class="btn btn-primary btn-sm"><i class="bi bi-plus-circle-fill me-1"></i>Create new report</button>
+                <a href="<?= URL_BASE ?>?turma=criar" class="btn btn-outline-secondary btn-sm me-2">
+                    <i class="bi bi-person-fill"></i>
+                    Nova Turma
+                </a>
             </div>
+        </div>
+
+        <?php require_once('../app/views/turma/lista.php') ?>
+
+    <?php endif ?>
+
+
+    <?php if (isset($matricula)): ?>
+
+        <div class="main-header">
+            <div>
+                <div class="page-title">Matricula</div>
+                <h4>Módulo de matricula</h4>
+            </div>
+            <div>
+                <a href="<?= URL_BASE ?>?matricula=criar" class="btn btn-outline-secondary btn-sm me-2">
+                    <i class="bi bi-person-fill"></i>
+                    Nova Matricula
+                </a>
+            </div>
+        </div>
+
+        <?php require_once('../app/views/matricula/lista.php') ?>
+
+    <?php endif ?>
+
+
+
+    <?php if (!isset($aluno) && (!isset($turma) || empty($turma)) && (!isset($matricula) || empty($matricula))): ?>
+        <div class="main-header">
+            <div>
+                <div class="page-title">Home</div>
+                <h4>Seja bem vindo!</h4>
+            </div>
+
         </div>
 
         <div class="alert alert-info" role="alert">
@@ -40,7 +78,4 @@
 
         <p>Exemplo .</p>
     <?php endif ?>
-
-
-
 </main>
