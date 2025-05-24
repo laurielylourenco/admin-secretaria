@@ -38,7 +38,10 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="cpf" class="form-label">CPF <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Apenas números"
+                            pattern="\d{11}"
+                            maxlength="11"
+                            title="Digite os 11 dígitos do CPF" required>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
@@ -50,7 +53,7 @@
                         <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
                         <input type="password" class="form-control" id="senha" name="senha" required>
                     </div>
-                   
+
                 </div>
                 <?php if (isset($erro)): ?>
                     <div class="alert alert-danger"><?= $erro ?></div>
