@@ -80,4 +80,36 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteConfirmModal = document.getElementById('deleteConfirmModal');
+            if (deleteConfirmModal) {
+                deleteConfirmModal.addEventListener('show.bs.modal', function(event) {
+                    var button = event.relatedTarget;
+                    var alunoId = button.getAttribute('data-aluno-id');
+                    var alunoNome = button.getAttribute('data-aluno-nome');
+
+                    var studentNameToDelete = deleteConfirmModal.querySelector('#studentNameToDelete');
+                    var alunoIdInput = deleteConfirmModal.querySelector('#alunoIdParaExcluir');
+                    console.log("alunoIdInput", alunoIdInput)
+                    if (studentNameToDelete) {
+                        studentNameToDelete.textContent = alunoNome;
+                    }
+                    if (alunoIdInput) {
+                        alunoIdInput.value = alunoId;
+                    }
+                });
+            }
+
+            deleteConfirmModal.addEventListener('hidden.bs.modal', function() {
+                if (alunoIdInput) {
+                    alunoIdInput.value = ''; // Limpa o valor
+                }
+                if (studentNameToDelete) {
+                    studentNameToDelete.textContent = ''; // Limpa o nome
+                }
+            });
+        });
+    </script>
+
     </html>

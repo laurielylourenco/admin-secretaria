@@ -88,6 +88,16 @@ class AlunoController extends Controller
         }
     }
 
+
+    public function deletar()
+    {
+        $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $this->alunoModel->deletar($id);
+
+        header("Location: " . URL_BASE . "?aluno=lista");
+        exit;
+    }
+
     function isSenhaForte(string $senha)
     {
 

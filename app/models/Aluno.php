@@ -26,11 +26,18 @@ class Aluno
     public function listar()
     {
         $stmt = $this->db->query("
-            SELECT nome,  DATE_FORMAT(data_nascimento, '%d/%m/%Y') AS data_nascimento,
+            SELECT id, nome,  DATE_FORMAT(data_nascimento, '%d/%m/%Y') AS data_nascimento,
             cpf, email 
             FROM 
                 alunos 
             ORDER BY nome ASC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function deletar(int $id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM alunos WHERE id = ?");
+        return $stmt->execute([$id]);
     }
 }

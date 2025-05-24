@@ -14,16 +14,16 @@
             <?php if (!empty($alunos_cadastrado)): ?>
                 <?php foreach ($alunos_cadastrado as $aluno): ?>
                     <tr>
-                        <td><?= htmlspecialchars($aluno['nome'] ) ?></td>
+                        <td><?= htmlspecialchars($aluno['nome']) ?></td>
                         <td><?= htmlspecialchars(($aluno['data_nascimento'])) ?></td>
                         <td><?= htmlspecialchars($aluno['cpf']) ?></td>
                         <td><?= htmlspecialchars($aluno['email']) ?></td>
                         <td class="text-center">
                             <button type="button" class="btn btn-warning btn-sm me-1" onclick="editarAluno(<?= $aluno['id'] ?? '' ?>)">
-                                <i class="fas fa-edit"></i> Editar
+                                <i class="bi bi-pencil-fill"></i>
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" data-aluno-id="<?= $aluno['id'] ?? '' ?>" data-aluno-nome="<?= htmlspecialchars($aluno['nome'] ?? '') ?>">
-                                <i class="fas fa-trash"></i> Excluir
+                                <i class="bi bi-trash-fill"></i>
                             </button>
                         </td>
                     </tr>
@@ -48,8 +48,13 @@
                 Tem certeza de que deseja excluir o aluno <strong id="studentNameToDelete"></strong>? Esta ação não poderá ser desfeita.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Excluir</button>
+                <form action="<?= URL_BASE ?>" method="post" id="deleteForm">
+                    <input type="hidden" name="id" id="alunoIdParaExcluir" value="-1">
+                    <input type="hidden" name="aluno" value="deletar">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
             </div>
         </div>
     </div>
+</div>

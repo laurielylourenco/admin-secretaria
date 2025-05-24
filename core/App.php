@@ -72,6 +72,10 @@ class App
             return ['Aluno', 'inserir'];
         }
 
+        if (isset($_POST['aluno']) && ($_POST['aluno'] === 'deletar')) {
+            return ['Aluno', 'deletar'];
+        }
+
         return [];
     }
 }
