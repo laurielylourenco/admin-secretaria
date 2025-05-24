@@ -19,9 +19,12 @@
                         <td><?= htmlspecialchars($aluno['cpf']) ?></td>
                         <td><?= htmlspecialchars($aluno['email']) ?></td>
                         <td class="text-center">
-                            <button type="button" class="btn btn-warning btn-sm me-1" onclick="editarAluno(<?= $aluno['id'] ?? '' ?>)">
+
+                            <a href="<?= URL_BASE ?>?aluno=editar&id_aluno=<?= $aluno['id'] ?? '' ?>" class="btn btn-warning btn-sm me-1">
                                 <i class="bi bi-pencil-fill"></i>
-                            </button>
+                            </a>
+                           
+
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" data-aluno-id="<?= $aluno['id'] ?? '' ?>" data-aluno-nome="<?= htmlspecialchars($aluno['nome'] ?? '') ?>">
                                 <i class="bi bi-trash-fill"></i>
                             </button>

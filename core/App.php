@@ -76,6 +76,14 @@ class App
             return ['Aluno', 'deletar'];
         }
 
+        if (isset($_GET['aluno']) && ($_GET['aluno'] === 'editar')) {
+            return ['Aluno', 'editar'];
+        }
+
+
+        if (isset($_POST['aluno']) && ($_POST['aluno'] === 'atualizar')) {
+            return ['Aluno', 'atualizar'];
+        }
         return [];
     }
 }
