@@ -80,10 +80,16 @@ class App
             return ['Aluno', 'editar'];
         }
 
-
         if (isset($_POST['aluno']) && ($_POST['aluno'] === 'atualizar')) {
             return ['Aluno', 'atualizar'];
         }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'lista')) {
+            return ['Turma', 'lista'];
+        }
+
+
+        
         return [];
     }
 }
