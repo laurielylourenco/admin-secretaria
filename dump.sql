@@ -1,6 +1,10 @@
 
 
 
+CREATE USER 'admin'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'qUlH45013{';
+GRANT ALL PRIVILEGES ON seu_banco.* TO 'admin'@'localhost';
+FLUSH PRIVILEGES;
+
 
 CREATE DATABASE admin_secretaria;
 

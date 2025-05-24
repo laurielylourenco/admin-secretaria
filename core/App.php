@@ -68,6 +68,10 @@ class App
             return ['Aluno', 'criar'];
         }
 
+        if (isset($_POST['aluno']) && ($_POST['aluno'] === 'inserir')) {
+            return ['Aluno', 'inserir'];
+        }
+
         return [];
     }
 }

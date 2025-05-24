@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /secretaria/public/
+    RewriteBase /admin-secretaria/public/
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -8,4 +8,4 @@
     RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
     
 </IfModule>
-ErrorDocument 404 /secretaria/public/pagina_nao_encontrada.php
+ErrorDocument 404 /admin-secretaria/public/pagina_nao_encontrada.php
