@@ -68,6 +68,28 @@ class App
             return ['Aluno', 'criar'];
         }
 
+        if (isset($_POST['aluno']) && ($_POST['aluno'] === 'inserir')) {
+            return ['Aluno', 'inserir'];
+        }
+
+        if (isset($_POST['aluno']) && ($_POST['aluno'] === 'deletar')) {
+            return ['Aluno', 'deletar'];
+        }
+
+        if (isset($_GET['aluno']) && ($_GET['aluno'] === 'editar')) {
+            return ['Aluno', 'editar'];
+        }
+
+        if (isset($_POST['aluno']) && ($_POST['aluno'] === 'atualizar')) {
+            return ['Aluno', 'atualizar'];
+        }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'lista')) {
+            return ['Turma', 'lista'];
+        }
+
+
+        
         return [];
     }
 }

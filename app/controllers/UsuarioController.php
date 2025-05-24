@@ -44,6 +44,6 @@ class UsuarioController extends Controller
     {
         session_destroy();
         header("Location: ". URL_BASE);
-      
+        exit;
     }
 }
