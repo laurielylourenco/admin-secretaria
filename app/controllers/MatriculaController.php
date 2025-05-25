@@ -1,11 +1,14 @@
 <?php
 
+require_once "../app/controllers/LoggerController.php";
+
 class MatriculaController extends Controller
 {
 
     private $matriculaModel;
     private $alunoModel;
     private $turmaModel;
+    private $logger;
 
     public function __construct()
     {
@@ -17,6 +20,7 @@ class MatriculaController extends Controller
         $this->matriculaModel = $this->model('Matricula');
         $this->turmaModel = $this->model('Turma');
         $this->alunoModel = $this->model('Aluno');
+        $this->logger =  new LoggerController();
     }
 
 
@@ -32,52 +36,65 @@ class MatriculaController extends Controller
     public function criar()
     {
 
-        /* Todos os aluno */
-        $turma = [];
-        $alunos_cadastrado = [];
+        try {
 
-        $lista = $this->turmaModel->listar();
-        if ($lista) {
-            $turma = $lista;
-        }
+            /* Todos os aluno */
+            $turma = [];
+            $alunos_cadastrado = [];
 
-        $lista = $this->alunoModel->listar();
-        if ($lista) {
-            $alunos_cadastrado = $lista;
+            $lista = $this->turmaModel->listar();
+            if ($lista) {
+                $turma = $lista;
+            }
+
+            $lista = $this->alunoModel->listar();
+            if ($lista) {
+                $alunos_cadastrado = $lista;
+            }
+            /* Todas as turmas */
+            return $this->view('matricula/criar', ['turma_cadastrada' => $turma, 'alunos_cadastrado' => $alunos_cadastrado]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
         }
-        /* Todas as turmas */
-        return $this->view('matricula/criar', ['turma_cadastrada' => $turma, 'alunos_cadastrado' => $alunos_cadastrado]);
     }
 
 
     public function inserir()
     {
 
-        $aluno = (int) filter_input(INPUT_POST, 'aluno_id', FILTER_VALIDATE_INT);
-        $turma = (int) filter_input(INPUT_POST, 'turma_id', FILTER_VALIDATE_INT);
-        $data_matricula = (string) filter_input(INPUT_POST, 'data_matricula', FILTER_SANITIZE_SPECIAL_CHARS);
+        try {
 
-        if (empty($aluno)) {
 
-            return  $this->view('matricula/criar', ['erro' => 'Voce precisa passa o aluno']);
+            $aluno = (int) filter_input(INPUT_POST, 'aluno_id', FILTER_VALIDATE_INT);
+            $turma = (int) filter_input(INPUT_POST, 'turma_id', FILTER_VALIDATE_INT);
+            $data_matricula = (string) filter_input(INPUT_POST, 'data_matricula', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            if (empty($aluno)) {
+
+                return  $this->view('matricula/criar', ['erro' => 'Voce precisa passa o aluno']);
+            }
+            if (empty($turma)) {
+
+                return  $this->view('matricula/criar', ['erro' => 'Voce escolher uma turma']);
+            }
+
+            if (empty($data_matricula)) {
+                return  $this->view('matricula/criar', ['erro' => 'Data de matricula é necessaria']);
+            }
+
+            /* Validação para verificar se Aluno já tem matricula na Turma selecionada RN04 */
+            if ($this->matriculaModel->isMatricula($aluno, $turma)) {
+                return $this->view('matricula/criar', ['erro' => 'Essa matricula já existe!']);
+            }
+
+            $this->matriculaModel->criar($aluno, $turma, $data_matricula);
+
+            header("Location: " . URL_BASE . "?matricula=criar");
+            exit;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
         }
-        if (empty($turma)) {
-
-            return  $this->view('matricula/criar', ['erro' => 'Voce escolher uma turma']);
-        }
-
-        if (empty($data_matricula)) {
-            return  $this->view('matricula/criar', ['erro' => 'Data de matricula é necessaria']);
-        }
-
-        /* Validação para verificar se Aluno já tem matricula na Turma selecionada RN04 */
-        if ($this->matriculaModel->isMatricula($aluno, $turma)) {
-            return $this->view('matricula/criar', ['erro' => 'Essa matricula já existe!']);
-        }
-
-        $this->matriculaModel->criar($aluno, $turma, $data_matricula);
-
-        header("Location: " . URL_BASE . "?matricula=criar");
-        exit;
     }
 }

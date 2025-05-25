@@ -1,10 +1,13 @@
 <?php
 
+
+require_once "../app/controllers/LoggerController.php";
+
 class TurmaController extends Controller
 {
 
     private $turmaModel;
-
+    private $logger;
     public function __construct()
     {
         if (!isset($_SESSION['usuario'])) {
@@ -13,6 +16,7 @@ class TurmaController extends Controller
         }
 
         $this->turmaModel = $this->model('Turma');
+        $this->logger =  new LoggerController();
     }
 
 
@@ -56,7 +60,7 @@ class TurmaController extends Controller
             exit;
         } catch (\Throwable $th) {
             //throw $th;
-
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
             return $this->view('turma/criar', ['erro' => 'Erro ao cadastrar turma!']);
         }
     }
@@ -86,7 +90,7 @@ class TurmaController extends Controller
             exit;
         } catch (\Throwable $th) {
             //throw $th;
-
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
             return $this->view('turma/criar', ['erro' => 'Erro ao cadastrar turma!']);
         }
     }
@@ -95,13 +99,21 @@ class TurmaController extends Controller
     public function editar()
     {
 
-        $id = (int) filter_input(INPUT_GET, 'id_turma', FILTER_VALIDATE_INT);
+        try {
+            $id = (int) filter_input(INPUT_GET, 'id_turma', FILTER_VALIDATE_INT);
 
-        $turma = $this->turmaModel->buscarTurmaById($id);
+            $turma = $this->turmaModel->buscarTurmaById($id);
 
-        if ($turma) {
-            return $this->view('turma/editar', ['turma_update' => $turma]);
-        } else {
+            if ($turma) {
+                return $this->view('turma/editar', ['turma_update' => $turma]);
+            } else {
+                header("Location: " . URL_BASE . "?turma=lista");
+                exit;
+            }
+        } catch (\Throwable $th) {
+
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
+
             header("Location: " . URL_BASE . "?turma=lista");
             exit;
         }
@@ -111,28 +123,43 @@ class TurmaController extends Controller
     public function deletar()
     {
 
-        $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        $this->turmaModel->deletar($id);
+        try {
 
-        header("Location: " . URL_BASE . "?turma=lista");
-        exit;
+            $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+            $this->turmaModel->deletar($id);
+
+            header("Location: " . URL_BASE . "?turma=lista");
+            exit;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
+            header("Location: " . URL_BASE . "?turma=lista");
+            exit;
+        }
     }
 
     public function buscaPorTurmaAluno()
     {
 
-        $id_turma = (int) filter_input(INPUT_GET, 'id_turma', FILTER_VALIDATE_INT);
+        try {
+            $id_turma = (int) filter_input(INPUT_GET, 'id_turma', FILTER_VALIDATE_INT);
 
-        $turma = [];
-        $lista = $this->turmaModel->buscarTurmaAluno($id_turma);
-        if ($lista) {
-            $turma = $lista;
+            $turma = [];
+            $lista = $this->turmaModel->buscarTurmaAluno($id_turma);
+            if ($lista) {
+                $turma = $lista;
+            }
+
+            $nome_turma = $this->turmaModel->buscarTurmaById($id_turma);
+
+
+            return $this->view('turma/lista_por_aluno', ['turma_nome' => $nome_turma, 'turma_cadastrada_por_aluno' => $turma]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
+            header("Location: " . URL_BASE . "?turma=lista");
+            exit;
         }
-
-        $nome_turma = $this->turmaModel->buscarTurmaById($id_turma);
-
-        
-        return $this->view('turma/lista_por_aluno', [ 'turma_nome' => $nome_turma,'turma_cadastrada_por_aluno' => $turma]);    
     }
 
     public function atualizar()
@@ -163,7 +190,7 @@ class TurmaController extends Controller
             header("Location: " . URL_BASE . "?turma=lista");
             exit;
         } catch (\Throwable $th) {
-
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
             header("Location: " . URL_BASE . "?turma=lista");
             exit;
         }
