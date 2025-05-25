@@ -66,34 +66,6 @@ class TurmaController extends Controller
     }
 
 
-    public function listar()
-    {
-        try {
-
-            $nome = (string) filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
-            $descricao = (string) filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
-
-
-            if (empty($nome) || strlen($nome) < 3) {
-
-                return  $this->view('turma/criar', ['erro' => 'Nome precisa ter 3 letras ou mais']);
-            }
-
-            if (empty($descricao)) {
-
-                return  $this->view('turma/criar', ['erro' => 'Descrição precisa ser preenchida!']);
-            }
-
-            $this->turmaModel->criar($nome, $descricao);
-
-            header("Location: " . URL_BASE . "?turma=criar");
-            exit;
-        } catch (\Throwable $th) {
-            //throw $th;
-            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
-            return $this->view('turma/criar', ['erro' => 'Erro ao cadastrar turma!']);
-        }
-    }
 
 
     public function editar()
