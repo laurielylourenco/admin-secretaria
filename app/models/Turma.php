@@ -39,9 +39,7 @@ class Turma
         turmas t
         LEFT JOIN qtd_alunos q ON q.turma_id = t.id
         ORDER BY
-        t.nome ASC;    
-        
-        
+        t.nome ASC   
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -55,7 +53,9 @@ class Turma
                 matriculas m
             INNER JOIN turmas t ON t.id = m.turma_id
             INNER JOIN alunos a ON a.id = m.aluno_id
-            WHERE t.id = ?");
+            WHERE t.id = ?
+            ORDER BY a.nome ASC
+            ");
 
         $stmt->execute([$id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

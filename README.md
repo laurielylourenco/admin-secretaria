@@ -61,16 +61,14 @@ Abaixo, o status de implementação de cada regra de negócio solicitada:
     * **Detalhes:** Os controllers verificam se os campos obrigatórios estão preenchidos. Validações específicas como formato de e-mail (intrínseco ao tipo de input HTML e filtro PHP) e CPF (formato e cálculo) também estão presentes para Alunos.
 
 * **RN04: Um aluno não pode ser matriculado 2x no mesmo curso (turma).** 
-    * **Status:** ❌ Não Implementado.
-    * **Detalhes:** Depende da finalização do módulo de Matrículas.
+    * **Status:** ✅ Implementado.
 
 * **RN05: Um aluno só pode ser cadastrado uma única vez de acordo com o CPF ou e-mail.** 
     * **Status:** ✅ Implementado.
     * **Detalhes:** O `AlunoController` utiliza o método `isAluno()` do `AlunoModel` para verificar a duplicidade antes de inserir um novo aluno.
 
 * **RN06: Na listagem da turma, devem ser exibidos quantos alunos cada turma possui.**
-    * **Status:** ❌ Não Implementado.
-    * **Detalhes:** Requer ajuste na consulta de listagem de turmas e no módulo de Matrículas.
+    * **Status:** ✅ Implementado.
 
 * **RN07: O sistema não deve permitir o cadastro de senhas fracas, exigindo o padrão de no mínimo 8 caracteres com letras maiúsculas, minúsculas, letras e símbolos.**
  (Observação: O PDF menciona "letras e símbolos", interpretado como "letras maiúsculas, minúsculas, números e símbolos" conforme padrão comum e implementado).
@@ -79,7 +77,7 @@ Abaixo, o status de implementação de cada regra de negócio solicitada:
 
 * **RN08: A senha deve ser armazenada criptografada no banco de dados.** 
     * **Status:** ✅ Implementado.
-    * **Detalhes:** A senha dos alunos é criptografada usando `password_hash()` antes de ser salva no banco de dados. (A senha do usuário administrador do sistema é fixa no código, não armazenada no BD atualmente).
+    * **Detalhes:** A senha dos alunos é criptografada usando `password_hash()` antes de ser salva no banco de dados.
 
 * **RN09: As turmas devem ser exibidas de maneira paginada a cada 10 itens.** 
     * **Status:** ✅ Implementado (via DataTables).
