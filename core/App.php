@@ -84,15 +84,28 @@ class App
             return ['Aluno', 'atualizar'];
         }
 
+            /* Rotas da turma */
         if (isset($_GET['turma']) && ($_GET['turma'] === 'lista')) {
             return ['Turma', 'index'];
         }
 
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'criar')) {
+            return ['Turma', 'criar'];
+        }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'inserir')) {
+            return ['Turma', 'inserir'];
+        }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'deletar')) {
+            return ['Turma', 'deletar'];
+        }
+
+        /* Rotas de matricula */
+
         if (isset($_GET['matricula']) && ($_GET['matricula'] === 'lista')) {
             return ['Matricula', 'index'];
         }
-
-
 
         return [];
     }

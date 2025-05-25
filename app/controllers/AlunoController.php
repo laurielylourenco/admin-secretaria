@@ -161,7 +161,9 @@ class AlunoController extends Controller
 
             $this->alunoModel->criar($nome, $data_nascimento, $cpf, $email, $senha);
 
-            $this->view('aluno/criar', ['sucesso' => 'Aluno criado com sucesso']);
+            //return $this->view('aluno/criar', ['sucesso' => 'Aluno criado com sucesso']);
+            header("Location: " . URL_BASE . "?aluno=criar");
+            exit;
         } catch (\Throwable $th) {
             // throw $th;
             return $this->view('aluno/criar', ['erro' => 'Erro ao cadastrar aluno!']);

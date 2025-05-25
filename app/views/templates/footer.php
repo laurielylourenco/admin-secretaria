@@ -22,6 +22,18 @@
             }]
         });
 
+        $('#tabelaTurmas').DataTable({
+
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
+            },
+            responsive: true,
+            columnDefs: [{
+                orderable: false,
+                targets: 2
+            }]
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('.sidebar .nav-link');
             const currentFullUrl = window.location.href;
@@ -117,16 +129,54 @@
                         alunoIdInput.value = alunoId;
                     }
                 });
+
+
+                deleteConfirmModal.addEventListener('hidden.bs.modal', function() {
+                    if (alunoIdInput) {
+                        alunoIdInput.value = ''; // Limpa o valor
+                    }
+                    if (studentNameToDelete) {
+                        studentNameToDelete.textContent = ''; // Limpa o nome
+                    }
+                });
             }
 
-            deleteConfirmModal.addEventListener('hidden.bs.modal', function() {
-                if (alunoIdInput) {
-                    alunoIdInput.value = ''; // Limpa o valor
-                }
-                if (studentNameToDelete) {
-                    studentNameToDelete.textContent = ''; // Limpa o nome
-                }
-            });
+
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteConfirmModalLabelTurma = document.getElementById('deleteConfirmModalTurma');
+            if (deleteConfirmModalLabelTurma) {
+                deleteConfirmModalLabelTurma.addEventListener('show.bs.modal', function(event) {
+                    var button = event.relatedTarget;
+                    var turmaId = button.getAttribute('data-turma-id');
+                    var turmaNome = button.getAttribute('data-turma-nome');
+
+                    var studentNameToDelete = deleteConfirmModalLabelTurma.querySelector('#turmaNameToDelete');
+                    var turmaIdInput = deleteConfirmModalLabelTurma.querySelector('#turmaIdParaExcluir');
+                    console.log("turmaIdInput", turmaIdInput, "studentNameToDelete", studentNameToDelete)
+                    if (studentNameToDelete) {
+                        studentNameToDelete.textContent = turmaNome;
+                    }
+                    if (turmaIdInput) {
+                        turmaIdInput.value = turmaId;
+                    }
+                });
+
+                deleteConfirmModalLabelTurma.addEventListener('hidden.bs.modal', function() {
+                    if (turmaIdInput) {
+                        turmaIdInput.value = '';
+                    }
+                    if (studentNameToDelete) {
+                        studentNameToDelete.textContent = ''; 
+                    }
+                });
+            }
+
+
         });
     </script>
 
