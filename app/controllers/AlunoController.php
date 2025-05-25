@@ -1,9 +1,12 @@
 <?php
 
-
+require_once "../app/controllers/LoggerController.php";
 class AlunoController extends Controller
 {
     private $alunoModel;
+
+    private $logger;
+
     public function __construct()
     {
         if (!isset($_SESSION['usuario'])) {
@@ -12,6 +15,7 @@ class AlunoController extends Controller
         }
 
         $this->alunoModel = $this->model('Aluno');
+        $this->logger =  new LoggerController();
     }
 
 
@@ -100,12 +104,13 @@ class AlunoController extends Controller
             $senha = password_hash($senha, PASSWORD_DEFAULT);
             $cpf = $this->formatarCPF($cpf);
 
-            $this->alunoModel->atualizar($id, $nome, $data_nascimento, $cpf, $email, $senha);
+            $rtn = $this->alunoModel->atualizar($id, $nome, $data_nascimento, $cpf, $email, $senha);
 
             header("Location: " . URL_BASE . "?aluno=lista");
             exit;
         } catch (\Throwable $th) {
 
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
             header("Location: " . URL_BASE . "?aluno=lista");
             exit;
         }
@@ -161,9 +166,11 @@ class AlunoController extends Controller
 
             $this->alunoModel->criar($nome, $data_nascimento, $cpf, $email, $senha);
 
-            $this->view('aluno/criar', ['sucesso' => 'Aluno criado com sucesso']);
+            header("Location: " . URL_BASE . "?aluno=criar");
+            exit;
         } catch (\Throwable $th) {
             // throw $th;
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
             return $this->view('aluno/criar', ['erro' => 'Erro ao cadastrar aluno!']);
         }
     }
@@ -171,11 +178,19 @@ class AlunoController extends Controller
 
     public function deletar()
     {
-        $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        $this->alunoModel->deletar($id);
+        try {
+            $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+            $this->alunoModel->deletar($id);
 
-        header("Location: " . URL_BASE . "?aluno=lista");
-        exit;
+            header("Location: " . URL_BASE . "?aluno=lista");
+            exit;
+        } catch (\Throwable $th) {
+
+            $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
+
+            header("Location: " . URL_BASE . "?aluno=lista");
+            exit;
+        }
     }
 
 

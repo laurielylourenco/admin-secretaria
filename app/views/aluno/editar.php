@@ -1,4 +1,4 @@
-<?php require_once('/var/www/html/admin-secretaria/app/views/templates/menu.php') ?>
+<?php require_once('../app/views/templates/menu.php') ?>
 
 <?php
 

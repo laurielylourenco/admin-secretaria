@@ -32,6 +32,8 @@ class App
     private function parseUrl()
     {
 
+
+        // O roteamento está meio verboso por falta de tempo para simplificar.
         if (isset($_GET['url'])) {
 
 
@@ -84,12 +86,50 @@ class App
             return ['Aluno', 'atualizar'];
         }
 
-        if (isset($_POST['turma']) && ($_POST['turma'] === 'lista')) {
-            return ['Turma', 'lista'];
+        /* Rotas da turma */
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'lista')) {
+            return ['Turma', 'index'];
+        }
+
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'criar')) {
+            return ['Turma', 'criar'];
+        }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'inserir')) {
+            return ['Turma', 'inserir'];
+        }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'deletar')) {
+            return ['Turma', 'deletar'];
+        }
+
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'editar')) {
+            return ['Turma', 'editar'];
+        }
+
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'busca_aluno')) {
+            return ['Turma', 'buscaPorTurmaAluno'];
+        }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'atualizar')) {
+            return ['Turma', 'atualizar'];
+        }
+
+        /* Rotas de matricula */
+
+        if (isset($_GET['matricula']) && ($_GET['matricula'] === 'lista')) {
+            return ['Matricula', 'index'];
+        }
+
+        if (isset($_GET['matricula']) && ($_GET['matricula'] === 'criar')) {
+            return ['Matricula', 'criar'];
         }
 
 
-        
+        if (isset($_POST['matricula']) && ($_POST['matricula'] === 'inserir')) {
+            return ['Matricula', 'inserir'];
+        }
+
         return [];
     }
 }

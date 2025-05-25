@@ -6,7 +6,7 @@
 
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <script>
@@ -21,6 +21,50 @@
                 targets: 4
             }]
         });
+        //
+
+        $('#tabelaTurmasPorAluno').DataTable({
+
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
+            },
+            responsive: true,
+            columnDefs: [{
+                orderable: false,
+                targets: 2
+            }]
+        });
+
+        $('#tabelaTurmas').DataTable({
+
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
+            },
+            responsive: true,
+            columnDefs: [{
+                orderable: false,
+                targets: 3
+            }]
+        });
+
+        // Inicializa o Select2 para Alunos
+        $(document).ready(function() {
+            $('.select2-aluno').select2({
+                placeholder: "Selecione um aluno...",
+                allowClear: true,
+                theme: 'bootstrap-5'
+            });
+        });
+
+
+        $(document).ready(function() {
+            $('.select2-turma').select2({
+                placeholder: "Selecione uma turma...",
+                allowClear: true,
+                theme: 'bootstrap-5'
+            });
+        });
+
 
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('.sidebar .nav-link');
@@ -117,16 +161,54 @@
                         alunoIdInput.value = alunoId;
                     }
                 });
+
+
+                deleteConfirmModal.addEventListener('hidden.bs.modal', function() {
+                    if (alunoIdInput) {
+                        alunoIdInput.value = ''; // Limpa o valor
+                    }
+                    if (studentNameToDelete) {
+                        studentNameToDelete.textContent = ''; // Limpa o nome
+                    }
+                });
             }
 
-            deleteConfirmModal.addEventListener('hidden.bs.modal', function() {
-                if (alunoIdInput) {
-                    alunoIdInput.value = ''; // Limpa o valor
-                }
-                if (studentNameToDelete) {
-                    studentNameToDelete.textContent = ''; // Limpa o nome
-                }
-            });
+
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteConfirmModalLabelTurma = document.getElementById('deleteConfirmModalTurma');
+            if (deleteConfirmModalLabelTurma) {
+                deleteConfirmModalLabelTurma.addEventListener('show.bs.modal', function(event) {
+                    var button = event.relatedTarget;
+                    var turmaId = button.getAttribute('data-turma-id');
+                    var turmaNome = button.getAttribute('data-turma-nome');
+
+                    var studentNameToDelete = deleteConfirmModalLabelTurma.querySelector('#turmaNameToDelete');
+                    var turmaIdInput = deleteConfirmModalLabelTurma.querySelector('#turmaIdParaExcluir');
+                    console.log("turmaIdInput", turmaIdInput, "studentNameToDelete", studentNameToDelete)
+                    if (studentNameToDelete) {
+                        studentNameToDelete.textContent = turmaNome;
+                    }
+                    if (turmaIdInput) {
+                        turmaIdInput.value = turmaId;
+                    }
+                });
+
+                deleteConfirmModalLabelTurma.addEventListener('hidden.bs.modal', function() {
+                    if (turmaIdInput) {
+                        turmaIdInput.value = '';
+                    }
+                    if (studentNameToDelete) {
+                        studentNameToDelete.textContent = '';
+                    }
+                });
+            }
+
+
         });
     </script>
 
