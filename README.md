@@ -30,7 +30,7 @@ Esta seção detalha como o projeto atende aos requisitos especificados no docum
 
 * **Matrícula:** 
     * **Status:** 
-    * A funcionalidade de matricular um aluno em uma turma e a visualização de alunos por turma está em Turma
+    * A funcionalidade de matricular um aluno em uma turma e a visualização de alunos por turma está na tabela de Turma(Botão para isso)
     * *Localização no código:*
         * Controller: `app/controllers/MatriculaController.php`
         * Model: `app/models/Matricula.php`
@@ -71,7 +71,6 @@ Abaixo, o status de implementação de cada regra de negócio solicitada:
     * **Status:** ✅ Implementado.
 
 * **RN07: O sistema não deve permitir o cadastro de senhas fracas, exigindo o padrão de no mínimo 8 caracteres com letras maiúsculas, minúsculas, letras e símbolos.**
- (Observação: O PDF menciona "letras e símbolos", interpretado como "letras maiúsculas, minúsculas, números e símbolos" conforme padrão comum e implementado).
     * **Status:** ✅ Implementado.
     * **Detalhes:** A função `isSenhaForte()` no `AlunoController` valida a senha dos alunos durante o cadastro e atualização.
 
