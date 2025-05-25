@@ -118,7 +118,7 @@ Abaixo, o status de implementação de cada regra de negócio solicitada:
     * Crie um banco de dados MySQL. O nome `admin_secretaria` é usado no `dump.sql` e `config.php`.
     * Importe o arquivo `dump.sql` fornecido na raiz do projeto para criar as tabelas (`usuarios`, `alunos`, `turmas`) e o usuário `admin` para acesso ao banco.
         ```bash
-        mysql -u seu_usuario_root_mysql -p nome_do_seu_banco_de_dados < dump.sql
+        mysql -u seu_usuario_root_mysql -p < dump.sql
         ```
         * **Observação:** O `dump.sql` tenta criar um usuário `'admin'@'localhost'` com a senha `'qUlH45013{'`. Se preferir usar um usuário MySQL existente, ajuste as permissões para o banco `admin_secretaria` e atualize o arquivo `config/config.php`.
 
