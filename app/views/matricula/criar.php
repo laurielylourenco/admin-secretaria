@@ -7,11 +7,6 @@
             <div>
                 <h1 class="h4">📝 Nova Matrícula</h1>
             </div>
-            <div>
-                <a href="<?= URL_BASE ?>?matricula=lista" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> Voltar para Lista de Matrículas
-                </a>
-            </div>
         </div>
     </main>
 

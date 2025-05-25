@@ -112,7 +112,7 @@
              </a>
          </li>
          <li class="nav-item">
-             <a href="<?= URL_BASE ?>?matricula=lista" class="nav-link active">
+             <a href="<?= URL_BASE ?>?matricula=criar" class="nav-link active">
                  <i class="bi bi-card-checklist"></i>
                  Matrícula
              </a>

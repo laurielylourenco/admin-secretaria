@@ -64,12 +64,29 @@
 
 
     <?php if (!isset($aluno) && (!isset($turma) || empty($turma)) && (!isset($matricula) || empty($matricula))): ?>
-        <div class="main-header">
-            <div>
-                <div class="page-title">Home</div>
-                <h4>Seja bem vindo!</h4>
-            </div>
 
+
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-8">
+                    <div class="main-header justify-content-center text-center mb-4">
+                        <div>
+                            <div class="page-title">Home</div>
+                            <h4>Seja bem vindo!</h4>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="text-center mb-4"> <i class="bi bi-bar-chart-steps" style="font-size: 3rem; color: #0d6efd;"></i>
+                                <h3 class="card-title mt-2">Sistema de Gestão da Secretaria</h3>
+                                <p class="text-muted">Desafio PHP</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
     <?php endif ?>
