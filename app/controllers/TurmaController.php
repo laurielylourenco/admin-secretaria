@@ -118,6 +118,22 @@ class TurmaController extends Controller
         exit;
     }
 
+    public function buscaPorTurmaAluno()
+    {
+
+        $id_turma = (int) filter_input(INPUT_GET, 'id_turma', FILTER_VALIDATE_INT);
+
+        $turma = [];
+        $lista = $this->turmaModel->buscarTurmaAluno($id_turma);
+        if ($lista) {
+            $turma = $lista;
+        }
+
+        $nome_turma = $this->turmaModel->buscarTurmaById($id_turma);
+
+        
+        return $this->view('turma/lista_por_aluno', [ 'turma_nome' => $nome_turma,'turma_cadastrada_por_aluno' => $turma]);    
+    }
 
     public function atualizar()
     {

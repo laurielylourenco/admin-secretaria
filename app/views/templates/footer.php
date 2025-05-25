@@ -6,7 +6,7 @@
 
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <script>
@@ -21,8 +21,9 @@
                 targets: 4
             }]
         });
+        //
 
-        $('#tabelaTurmas').DataTable({
+        $('#tabelaTurmasPorAluno').DataTable({
 
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
@@ -33,6 +34,37 @@
                 targets: 2
             }]
         });
+
+        $('#tabelaTurmas').DataTable({
+
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
+            },
+            responsive: true,
+            columnDefs: [{
+                orderable: false,
+                targets: 3
+            }]
+        });
+
+        // Inicializa o Select2 para Alunos
+        $(document).ready(function() {
+            $('.select2-aluno').select2({
+                placeholder: "Selecione um aluno...",
+                allowClear: true,
+                theme: 'bootstrap-5'
+            });
+        });
+
+
+        $(document).ready(function() {
+            $('.select2-turma').select2({
+                placeholder: "Selecione uma turma...",
+                allowClear: true,
+                theme: 'bootstrap-5'
+            });
+        });
+
 
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('.sidebar .nav-link');
@@ -171,7 +203,7 @@
                         turmaIdInput.value = '';
                     }
                     if (studentNameToDelete) {
-                        studentNameToDelete.textContent = ''; 
+                        studentNameToDelete.textContent = '';
                     }
                 });
             }

@@ -86,7 +86,7 @@ class App
             return ['Aluno', 'atualizar'];
         }
 
-            /* Rotas da turma */
+        /* Rotas da turma */
         if (isset($_GET['turma']) && ($_GET['turma'] === 'lista')) {
             return ['Turma', 'index'];
         }
@@ -102,9 +102,13 @@ class App
         if (isset($_POST['turma']) && ($_POST['turma'] === 'deletar')) {
             return ['Turma', 'deletar'];
         }
-        
+
         if (isset($_GET['turma']) && ($_GET['turma'] === 'editar')) {
             return ['Turma', 'editar'];
+        }
+
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'busca_aluno')) {
+            return ['Turma', 'buscaPorTurmaAluno'];
         }
 
         if (isset($_POST['turma']) && ($_POST['turma'] === 'atualizar')) {
@@ -115,6 +119,15 @@ class App
 
         if (isset($_GET['matricula']) && ($_GET['matricula'] === 'lista')) {
             return ['Matricula', 'index'];
+        }
+
+        if (isset($_GET['matricula']) && ($_GET['matricula'] === 'criar')) {
+            return ['Matricula', 'criar'];
+        }
+
+
+        if (isset($_POST['matricula']) && ($_POST['matricula'] === 'inserir')) {
+            return ['Matricula', 'inserir'];
         }
 
         return [];
