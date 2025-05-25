@@ -1,6 +1,6 @@
 <div class="container-fluid">
 
-    <h2 class="mb-3">👩‍🎓 Turmas Ativas</h2>
+    <h2 class="mb-3">📚 Turmas Ativas</h2>
     <div class="table-responsive">
         <table id="tabelaTurmas" class="table table-striped table-hover">
             <thead class="table-dark">
