@@ -29,18 +29,17 @@ Esta seção detalha como o projeto atende aos requisitos especificados no docum
         * Views: `app/views/turma/`
 
 * **Matrícula:** 
-    * **Status:** Funcionalidade em estágio inicial de desenvolvimento.
-    * A estrutura para listagem e criação de matrículas está presente.
-    * A funcionalidade de matricular um aluno em uma turma e a visualização de alunos por turma ainda precisam ser implementadas completamente (requer a criação da tabela `matriculas` e a lógica associada).
+    * **Status:** 
+    * A funcionalidade de matricular um aluno em uma turma e a visualização de alunos por turma está em Turma
     * *Localização no código:*
         * Controller: `app/controllers/MatriculaController.php`
-        * Model: `app/models/Matricula.php` (atualmente vazio)
+        * Model: `app/models/Matricula.php`
         * Views: `app/views/matricula/`
 
 * **Bônus - Página de Login:** 
     * Implementada página de login para administradores. 
     * Todas as páginas administrativas principais (Aluno, Turma, Matrícula) são acessíveis somente por usuários logados. 
-    * Autenticação via e-mail e senha (atualmente com credenciais fixas para demonstração: `laurielylourenco@gmail.com` / `123`).
+    * Autenticação via e-mail e senha (com credenciais fixas para demonstração: `user@teste.com` / `=@j14&@bO6ZV`).
     * *Localização no código:*
         * Controller: `app/controllers/UsuarioController.php`
         * View: `app/views/usuario/login.php`
