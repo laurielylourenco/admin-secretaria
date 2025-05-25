@@ -1,4 +1,3 @@
-
 <div class="container-fluid">
 
 <h2 class="mb-3">👩‍🎓 Turmas Ativas</h2>
@@ -30,7 +29,9 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5" class="text-center" id="noDataRow">Nenhum aluno cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Turma cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Turma cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Turma cadastrado ainda.</td>
                 </tr>
             <?php endif; ?>
         </tbody>

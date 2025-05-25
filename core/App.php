@@ -32,6 +32,8 @@ class App
     private function parseUrl()
     {
 
+
+        // O roteamento está meio verboso por falta de tempo para simplificar.
         if (isset($_GET['url'])) {
 
 
@@ -99,6 +101,14 @@ class App
 
         if (isset($_POST['turma']) && ($_POST['turma'] === 'deletar')) {
             return ['Turma', 'deletar'];
+        }
+        
+        if (isset($_GET['turma']) && ($_GET['turma'] === 'editar')) {
+            return ['Turma', 'editar'];
+        }
+
+        if (isset($_POST['turma']) && ($_POST['turma'] === 'atualizar')) {
+            return ['Turma', 'atualizar'];
         }
 
         /* Rotas de matricula */

@@ -33,7 +33,11 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5" class="text-center" id="noDataRow">Nenhum aluno cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Aluno cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Aluno cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Aluno cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Aluno cadastrado ainda.</td>
+                    <td  class="text-center" id="noDataRow">Nenhum Aluno cadastrado ainda.</td>
                 </tr>
             <?php endif; ?>
         </tbody>

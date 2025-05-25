@@ -100,14 +100,15 @@ class AlunoController extends Controller
             $senha = password_hash($senha, PASSWORD_DEFAULT);
             $cpf = $this->formatarCPF($cpf);
 
-            $this->alunoModel->atualizar($id, $nome, $data_nascimento, $cpf, $email, $senha);
+            $rtn = $this->alunoModel->atualizar($id, $nome, $data_nascimento, $cpf, $email, $senha);
 
+            var_export($rtn);
             header("Location: " . URL_BASE . "?aluno=lista");
             exit;
         } catch (\Throwable $th) {
-
-            header("Location: " . URL_BASE . "?aluno=lista");
-            exit;
+           
+             header("Location: " . URL_BASE . "?aluno=lista");
+            exit; 
         }
     }
 
