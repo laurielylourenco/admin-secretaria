@@ -14,7 +14,6 @@ class UsuarioController extends Controller
     {
 
         $this->view('usuario/login');
-
     }
 
 
@@ -25,25 +24,31 @@ class UsuarioController extends Controller
             $email = $_POST['email'];
             $senha = $_POST['senha'];
 
+            /* */
+            $usuario = $this->usuarioModel->buscarPorEmail($email);
 
-            if($email === "laurielylourenco@gmail.com"  && $senha === '123' ){
-                $_SESSION['usuario'] = ["nome" => "Lauriely", "email" => "laurielylourenco@gmail.com"] ;
 
-                //$this->view('home');
 
-                header("Location: ". URL_BASE);
+            if ($usuario && password_verify($senha, $usuario['senha'])) {
+                $_SESSION['usuario'] = [
+                    'nome' => $usuario['nome'],
+                    'id' => $usuario['id'],
+                    'email' => $usuario['email']
+                ];
+                header("Location: " . URL_BASE);
+                exit;
             } else {
                 $this->view('usuario/login', ['erro' => 'Email ou senha inválidos']);
             }
         }
     }
 
-   
+
 
     public function logout()
     {
         session_destroy();
-        header("Location: ". URL_BASE);
+        header("Location: " . URL_BASE);
         exit;
     }
 }

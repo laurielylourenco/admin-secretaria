@@ -72,10 +72,5 @@
 
         </div>
 
-        <div class="alert alert-info" role="alert">
-            O conteúdo da sua página.
-        </div>
-
-        <p>Exemplo .</p>
     <?php endif ?>
 </main>

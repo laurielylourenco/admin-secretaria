@@ -8,7 +8,7 @@
                 <h1 class="h4">📝 Cadastro de Turma</h1>
             </div>
             <div>
-                <a href="<?= URL_BASE ?>?matricula=lista" class="btn btn-outline-secondary btn-sm">
+                <a href="<?= URL_BASE ?>?turma=lista" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> Voltar
                 </a>
             </div>

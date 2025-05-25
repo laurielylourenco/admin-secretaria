@@ -29,3 +29,5 @@ Homestead.json
 .phpactor.json
 auth.json
 lista.txt
+
+sessions/
