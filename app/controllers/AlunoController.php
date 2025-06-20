@@ -1,6 +1,8 @@
 <?php
 
 require_once "../app/controllers/LoggerController.php";
+require_once "../app/middleware/FormAluno.php";
+
 class AlunoController extends Controller
 {
     private $alunoModel;
@@ -52,134 +54,95 @@ class AlunoController extends Controller
 
     public function atualizar()
     {
-
         try {
-
             $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-            $nome = (string) filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
-            $data_nascimento = (string) filter_input(INPUT_POST, 'dataNascimento', FILTER_SANITIZE_SPECIAL_CHARS);
-            $cpf = (string) filter_input(INPUT_POST, 'cpf', FILTER_SANITIZE_SPECIAL_CHARS);
-            $email = (string) filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            $senha = (string) $_POST['senha'];
-            $aluno = $this->alunoModel->buscarSenhaById($id);
-            $aluno_e = $this->alunoModel->buscarAlunoById($id);
 
+            $postData = [
+                'id' => $id,
+                'nome' => trim(filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'dataNascimento' => trim(filter_input(INPUT_POST, 'dataNascimento', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'cpf' => trim(filter_input(INPUT_POST, 'cpf', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'email' => trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL)),
+                'senha' => $_POST['senha'] ?? ''
+            ];
 
-            if ($aluno && empty($senha)) {
-                $senha = $aluno['senha'];
+            $validarForm = new FormAluno();
+
+            $erros = $validarForm->validarUpdate();
+
+            if (!empty($erros)) {
+                
+                return $this->view('aluno/editar', ['erros' => $erros, 'aluno_update' => $postData]);
             }
 
-            if (!isset($nome) || strlen($nome) < 3) {
-
-                return  $this->view('aluno/editar', ['erro' => 'Nome precisa ter mais de 3 letras', 'aluno_update' => $aluno_e]);
-            }
-            if (empty($id)) {
-                return $this->view('aluno/editar', ['erro' => 'ID precisa ser enviado!', 'aluno_update' => $aluno_e]);
-            }
-
-            if (empty($data_nascimento)) {
-                return $this->view('aluno/editar', ['erro' => 'Data de nascimento precisa ser enviada!', 'aluno_update' => $aluno_e]);
+            if (empty($postData['senha'])) {
+                $senhaAntiga = $this->alunoModel->buscarSenhaById($id);
+                $senhaParaSalvar = $senhaAntiga['senha'];
+            } else {
+                $senhaParaSalvar = password_hash($postData['senha'], PASSWORD_DEFAULT);
             }
 
-            if ($data_nascimento == date('Y-m-d')) {
-                return $this->view('aluno/editar', ['erro' => 'Data de nascimento precisa ser diferente da data atual!', 'aluno_update' => $aluno_e]);
-            }
+            $cpfFormatado = $this->formatarCPF($postData['cpf']);
 
-            if (empty($cpf)) {
-                return $this->view('aluno/editar', ['erro' => 'CPF precisa ser enviado!', 'aluno_update' => $aluno_e]);
-            } elseif (!$this->validarCPF($cpf) || !is_numeric($cpf)) {
+            
+            $this->alunoModel->atualizar($id, $postData['nome'], $postData['dataNascimento'], $cpfFormatado, $postData['email'], $senhaParaSalvar);
 
-                return $this->view('aluno/editar', ['erro' => 'CPF inválido!', 'aluno_update' => $aluno_e]);
-            }
-
-            if (empty($email)) {
-                return $this->view('aluno/editar', ['erro' => 'Email precisa ser enviado!', 'aluno_update' => $aluno_e]);
-            }
-
-            if (!$this->isSenhaForte($senha)) {
-                return $this->view('aluno/editar', ['erro' => 'A senha não atende aos critérios de segurança. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos.', 'aluno_update' => $aluno_e]);
-            }
-
-
-            $senha = password_hash($senha, PASSWORD_DEFAULT);
-            $cpf = $this->formatarCPF($cpf);
-
-            $rtn = $this->alunoModel->atualizar($id, $nome, $data_nascimento, $cpf, $email, $senha);
-
+            
+            $_SESSION['sucesso'] = "Dados do aluno atualizados com sucesso!";
             header("Location: " . URL_BASE . "?aluno=lista");
             exit;
         } catch (\Throwable $th) {
-
             $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
+            $_SESSION['erro_geral'] = "Ocorreu um erro ao atualizar os dados.";
             header("Location: " . URL_BASE . "?aluno=lista");
             exit;
         }
     }
-
 
     public function inserir()
     {
-
         try {
-            $nome = (string) filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
-            $data_nascimento = (string) filter_input(INPUT_POST, 'dataNascimento', FILTER_SANITIZE_SPECIAL_CHARS);
-            $cpf = (string) filter_input(INPUT_POST, 'cpf', FILTER_SANITIZE_SPECIAL_CHARS);
-            $email = (string) filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            $senha = (string) $_POST['senha'];
+            
+            $postData = [
+                'nome' => trim(filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'dataNascimento' => trim(filter_input(INPUT_POST, 'dataNascimento', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'cpf' => trim(filter_input(INPUT_POST, 'cpf', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'email' => trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL)),
+                'senha' => $_POST['senha'] ?? ''
+            ];
+
+            $validarForm = new FormAluno();
+            $erros = $validarForm->validarInsert();
 
 
-            if (!isset($nome) || strlen($nome) < 3) {
-
-                return  $this->view('aluno/criar', ['erro' => 'Nome precisa ter mais de 3 letras']);
+            if ($this->alunoModel->isAluno($postData['cpf'], $postData['email'])) {
+                $erros['geral'] = "Já existe um aluno cadastrado com este CPF ou E-mail.";
             }
 
-            if (empty($data_nascimento)) {
-                return $this->view('aluno/criar', ['erro' => 'Data de nascimento precisa ser enviada!']);
+            if (!empty($erros)) {
+
+                return $this->view('aluno/criar', ['erros' => $erros, 'post' => $postData]);
             }
 
-            if ($data_nascimento == date('Y-m-d')) {
-                return $this->view('aluno/criar', ['erro' => 'Data de nascimento precisa ser diferente da data atual!']);
-            }
+            $senhaHash = password_hash($postData['senha'], PASSWORD_DEFAULT);
+            $cpfFormatado = $this->formatarCPF($postData['cpf']);
 
-            if (empty($cpf)) {
-                return $this->view('aluno/criar', ['erro' => 'CPF precisa ser enviado!']);
-            } elseif (!$this->validarCPF($cpf) || !is_numeric($cpf)) {
+            $this->alunoModel->criar($postData['nome'], $postData['dataNascimento'], $cpfFormatado, $postData['email'], $senhaHash);
 
-                return $this->view('aluno/criar', ['erro' => 'CPF inválido!']);
-            }
-
-            if (empty($email)) {
-                return $this->view('aluno/criar', ['erro' => 'Email precisa ser enviado!']);
-            }
-
-            if ($this->alunoModel->isAluno($cpf, $email)) {
-                return $this->view('aluno/criar', ['erro' => 'Esse aluno já existe!']);
-            }
-
-            if (!$this->isSenhaForte($senha)) {
-                return $this->view('aluno/criar', ['erro' => 'A senha não atende aos critérios de segurança. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos.']);
-            }
-
-
-            $senha = password_hash($senha, PASSWORD_DEFAULT);
-            $cpf = $this->formatarCPF($cpf);
-
-            $this->alunoModel->criar($nome, $data_nascimento, $cpf, $email, $senha);
-
-            header("Location: " . URL_BASE . "?aluno=criar");
+            $_SESSION['sucesso'] = "Aluno cadastrado com sucesso!";
+            header("Location: " . URL_BASE . "?aluno=lista");
             exit;
         } catch (\Throwable $th) {
-            // throw $th;
             $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
-            return $this->view('aluno/criar', ['erro' => 'Erro ao cadastrar aluno!']);
+            return $this->view('aluno/criar', ['erros' => ['geral' => 'Ocorreu um erro inesperado ao cadastrar o aluno.'], 'post' => $postData]);
         }
     }
-
 
     public function deletar()
     {
         try {
             $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+
             $this->alunoModel->deletar($id);
 
             header("Location: " . URL_BASE . "?aluno=lista");

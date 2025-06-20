@@ -26,52 +26,60 @@ $emailValor = isset($aluno_update['email']) ? htmlspecialchars($aluno_update['em
 
     <div class="card">
         <div class="card-header">
-            <h5 id="formTitle">Editar Dados do Aluno: <?= $nomeValor ?></h5>
+            <h5 id="formTitle">Editar Dados do Aluno: <?= htmlspecialchars($aluno_update['nome'] ?? '') ?></h5>
         </div>
         <div class="card-body">
-            <form id="studentForm" method="post" action="<?= URL_BASE ?>">
-                <input type="hidden" name="id" value="<?= $alunoId ?>">
+            <form id="studentForm" method="post" action="<?= URL_BASE ?>?aluno=atualizar">
 
+                <input type="hidden" name="id" value="<?= htmlspecialchars($aluno_update['id'] ?? '') ?>">
                 <input type="hidden" name="aluno" value="atualizar">
+
+                <?php if (isset($erros['geral'])): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($erros['geral']) ?></div>
+                <?php endif; ?>
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="nome" class="form-label">Nome Completo <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nome" name="nome" value="<?= $nomeValor ?>" required>
+                        <input type="text" class="form-control <?= isset($erros['nome']) ? 'is-invalid' : '' ?>" id="nome" name="nome" value="<?= htmlspecialchars($aluno_update['nome'] ?? '') ?>" required>
+                        <?php if (isset($erros['nome'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['nome']) ?></div>
+                        <?php endif; ?>
                     </div>
                     <div class="col-md-6">
                         <label for="dataNascimento" class="form-label">Data de Nascimento <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" value="<?= $dataNascimentoValor ?>" required>
+                        <input type="date" class="form-control <?= isset($erros['data_nascimento']) ? 'is-invalid' : '' ?>" id="dataNascimento" name="dataNascimento" value="<?= htmlspecialchars($aluno_update['data_nascimento'] ?? '') ?>" required>
+                        <?php if (isset($erros['data_nascimento'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['data_nascimento']) ?></div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="cpf" class="form-label">CPF <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Apenas números"
-                            pattern="\d{11}"
-                            maxlength="11"
-                            title="Digite os 11 dígitos do CPF" value="<?= $cpfValor ?>" required>
+                        <input type="text" class="form-control <?= isset($erros['cpf']) ? 'is-invalid' : '' ?>" id="cpf" name="cpf" placeholder="Apenas números" maxlength="11" value="<?= htmlspecialchars($aluno_update['cpf'] ?? '') ?>" required>
+                        <?php if (isset($erros['cpf'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['cpf']) ?></div>
+                        <?php endif; ?>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="exemplo@dominio.com" value="<?= $emailValor ?>" required>
+                        <input type="email" class="form-control <?= isset($erros['email']) ? 'is-invalid' : '' ?>" id="email" name="email" placeholder="exemplo@dominio.com" value="<?= htmlspecialchars($aluno_update['email'] ?? '') ?>" required>
+                        <?php if (isset($erros['email'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['email']) ?></div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="senha" class="form-label">Nova Senha</label>
-                        <input type="password" class="form-control" id="senha" name="senha"
-                            placeholder="Deixe em branco para não alterar">
+                        <input type="password" class="form-control <?= isset($erros['senha']) ? 'is-invalid' : '' ?>" id="senha" name="senha" placeholder="Deixe em branco para não alterar">
                         <small class="form-text text-muted">Preencha apenas se desejar alterar a senha atual.</small>
+                        <?php if (isset($erros['senha'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['senha']) ?></div>
+                        <?php endif; ?>
                     </div>
                 </div>
-
-                <?php if (isset($erro)): ?>
-                    <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
-                <?php endif; ?>
-
-                <?php if (isset($sucesso)): ?>
-                    <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
-                <?php endif; ?>
 
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary" id="submitButton">
