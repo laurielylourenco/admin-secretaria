@@ -1,5 +1,5 @@
 # Admin-Secretaria 
-
+![imagem do sistema](image.png)
 Este projeto foi desenvolvido como solução para um "Desafio", com o objetivo de criar uma aplicação para a secretaria gerenciar alunos, turmas e matrículas.
 
 ## Visão Geral do Projeto
