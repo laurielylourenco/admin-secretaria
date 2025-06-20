@@ -20,34 +20,32 @@
             <h5 id="formTitle">Dados da Turma</h5>
         </div>
         <div class="card-body">
-            <form id="turmaForm" method="post" action="<?= URL_BASE ?>">
+            <form id="turmaForm" method="post" action="<?= URL_BASE ?>?turma=inserir">
+                <input type="hidden" name="turma" value="inserir">
 
-                <input type="hidden" id="turma" name="turma" value="inserir">
+                <?php if (isset($erro_geral)): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($erro_geral) ?></div>
+                <?php endif ?>
+
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
+                        <input type="text" class="form-control <?= isset($erros['nome']) ? 'is-invalid' : '' ?>" id="nome" name="nome" value="<?= htmlspecialchars($post['nome'] ?? '') ?>" required>
+                        <?php if (isset($erros['nome'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['nome']) ?></div>
+                        <?php endif ?>
                     </div>
-
                 </div>
+
                 <div class="row mb-3">
                     <div class="col-md-12">
-
-                        <div class="form-floating">
-                            <textarea class="form-control" placeholder="Descrição" id="descricao" name="descricao"></textarea>
-                            <label for="descricao" class="form-label">Descrição <span class="text-danger">*</span></label>
-                        </div>
+                        <label for="descricao" class="form-label">Descrição <span class="text-danger">*</span></label>
+                        <textarea class="form-control <?= isset($erros['descricao']) ? 'is-invalid' : '' ?>" placeholder="Descrição da turma" id="descricao" name="descricao" style="height: 100px" required><?= htmlspecialchars($post['descricao'] ?? '') ?></textarea>
+                        <?php if (isset($erros['descricao'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['descricao']) ?></div>
+                        <?php endif ?>
                     </div>
-
                 </div>
-
-                <?php if (isset($erro)): ?>
-                    <div class="alert alert-danger"><?= $erro ?></div>
-                <?php endif ?>
-
-                <?php if (isset($sucesso)): ?>
-                    <div class="alert alert-success"><?= $sucesso ?></div>
-                <?php endif ?>
 
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary" id="submitButton">

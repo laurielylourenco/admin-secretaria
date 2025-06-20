@@ -2,6 +2,7 @@
 
 
 require_once "../app/controllers/LoggerController.php";
+require_once "../app/middleware/FormTurma.php";
 
 class TurmaController extends Controller
 {
@@ -39,29 +40,27 @@ class TurmaController extends Controller
     public function inserir()
     {
         try {
+            
+            $validarForm = new FormTurma();
+            $erros = $validarForm->validar();
 
-            $nome = (string) filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
-            $descricao = (string) filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
+            $dadosPost = [
+                'nome' => filter_input(INPUT_POST, 'nome'),
+                'descricao' => filter_input(INPUT_POST, 'descricao')
+            ];
 
-
-            if (empty($nome) || strlen($nome) < 3) {
-
-                return  $this->view('turma/criar', ['erro' => 'Nome precisa ter 3 letras ou mais']);
+            if (count($erros) > 0) {
+                return $this->view('turma/criar', ['erros' => $erros, 'post' => $dadosPost]);
             }
 
-            if (empty($descricao)) {
+            $this->turmaModel->criar($dadosPost['nome'], $dadosPost['descricao']);
 
-                return  $this->view('turma/criar', ['erro' => 'Descrição precisa ser preenchida!']);
-            }
-
-            $this->turmaModel->criar($nome, $descricao);
-
-            header("Location: " . URL_BASE . "?turma=criar");
+            $_SESSION['sucesso'] = "Turma cadastrada com sucesso!";
+            header("Location: " . URL_BASE . "?turma=lista");
             exit;
         } catch (\Throwable $th) {
-            //throw $th;
             $this->logger->logError($th->getMessage(),  $th->getFile(), $th->getLine());
-            return $this->view('turma/criar', ['erro' => 'Erro ao cadastrar turma!']);
+            return $this->view('turma/criar', ['erro_geral' => 'Erro ao cadastrar turma!', 'post' => $dadosPost]);
         }
     }
 
@@ -136,29 +135,26 @@ class TurmaController extends Controller
 
     public function atualizar()
     {
-
         try {
-
+            
+            $validarForm = new FormTurma();
+            $erros = $validarForm->validar();
 
             $id = (int) filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+            $dadosPost = [
+                'id' => $id,
+                'nome' => filter_input(INPUT_POST, 'nome'),
+                'descricao' => filter_input(INPUT_POST, 'descricao')
+            ];
 
-            $nome = (string) filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
-            $descricao = (string) filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
-
-            $turma_e = $this->turmaModel->buscarTurmaById($id);
-
-            if (empty($nome) || strlen($nome) < 3) {
-
-                return  $this->view('turma/editar', ['erro' => 'Nome precisa ter 3 letras ou mais', 'turma_update' => $turma_e]);
+            if (count($erros) > 0) {
+        
+                return $this->view('turma/editar', ['erros' => $erros, 'turma_update' => $dadosPost]);
             }
 
-            if (empty($descricao)) {
+            $this->turmaModel->atualizar($id, $dadosPost['nome'], $dadosPost['descricao']);
 
-                return  $this->view('turma/editar', ['erro' => 'Descrição precisa ser preenchida!', 'turma_update' => $turma_e]);
-            }
-
-            $this->turmaModel->atualizar($id, $nome, $descricao);
-
+            $_SESSION['sucesso'] = "Turma atualizada com sucesso!";
             header("Location: " . URL_BASE . "?turma=lista");
             exit;
         } catch (\Throwable $th) {

@@ -1,12 +1,5 @@
 <?php require_once('../app/views/templates/menu.php') ?>
 
-<?php
-
-$turmaId = isset($turma_update['id']) ? htmlspecialchars($turma_update['id']) : '';
-$nomeValor = isset($turma_update['nome']) ? htmlspecialchars($turma_update['nome']) : '';
-$descricaoValor = isset($turma_update['descricao']) ? htmlspecialchars($turma_update['descricao']) : '';
-?>
-
 <div class="container-fluid">
 
     <main class="main-content mb-4">
@@ -22,42 +15,39 @@ $descricaoValor = isset($turma_update['descricao']) ? htmlspecialchars($turma_up
         </div>
     </main>
 
-
     <div class="card">
         <div class="card-header">
-            <h5 id="formTitle">Editar Dados da Turma: <?= $nomeValor ?></h5>
+            <h5 id="formTitle">Editar Dados da Turma: <?= htmlspecialchars($turma_update['nome'] ?? '') ?></h5>
         </div>
         <div class="card-body">
-            <form id="studentForm" method="post" action="<?= URL_BASE ?>">
-                <input type="hidden" name="id" value="<?= $turmaId ?>">
+            <form id="turmaForm" method="post" action="<?= URL_BASE ?>?turma=atualizar">
+
+                <input type="hidden" name="id" value="<?= htmlspecialchars($turma_update['id'] ?? '') ?>">
                 <input type="hidden" name="turma" value="atualizar">
+
+                <?php if (isset($erros['geral'])): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($erros['geral']) ?></div>
+                <?php endif; ?>
+
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nome" name="nome" value="<?= $nomeValor ?>" required>
+                        <input type="text" class="form-control <?= isset($erros['nome']) ? 'is-invalid' : '' ?>" id="nome" name="nome" value="<?= htmlspecialchars($turma_update['nome'] ?? '') ?>" required>
+                        <?php if (isset($erros['nome'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['nome']) ?></div>
+                        <?php endif; ?>
                     </div>
-
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-
-                        <div class="form-floating">
-                        <textarea class="form-control" placeholder="Descrição" id="descricao" name="descricao" ><?= $descricaoValor ?></textarea>
-                            <label for="descricao" class="form-label">Descrição <span class="text-danger">*</span></label>
-                        </div>
+                        <label for="descricao" class="form-label">Descrição <span class="text-danger">*</span></label>
+                        <textarea class="form-control <?= isset($erros['descricao']) ? 'is-invalid' : '' ?>" placeholder="Descrição" id="descricao" name="descricao" style="height: 100px" required><?= htmlspecialchars($turma_update['descricao'] ?? '') ?></textarea>
+                        <?php if (isset($erros['descricao'])): ?>
+                            <div class="invalid-feedback"><?= htmlspecialchars($erros['descricao']) ?></div>
+                        <?php endif; ?>
                     </div>
-
                 </div>
-
-
-                <?php if (isset($erro)): ?>
-                    <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
-                <?php endif; ?>
-
-                <?php if (isset($sucesso)): ?>
-                    <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
-                <?php endif; ?>
 
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary" id="submitButton">
@@ -68,5 +58,4 @@ $descricaoValor = isset($turma_update['descricao']) ? htmlspecialchars($turma_up
             </form>
         </div>
     </div>
-
 </div>
