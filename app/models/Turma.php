@@ -17,29 +17,20 @@ class Turma
     public function listar()
     {
         $stmt = $this->db->query("
-        WITH
-            qtd_alunos AS (
-                SELECT
-                COUNT(*) AS alunos_por_turma,
-                turma_id
-                FROM
-                matriculas
-                GROUP BY
-                turma_id
-        )
-        SELECT
-        t.id,
-        t.nome,
-        t.descricao,
-        CASE
-            WHEN q.alunos_por_turma IS NULL THEN 0
-            ELSE q.alunos_por_turma
-        END AS alunos_por_turma
+         SELECT
+            t.id,
+            t.nome,
+            t.descricao,
+            COUNT(m.id) AS alunos_por_turma
         FROM
-        turmas t
-        LEFT JOIN qtd_alunos q ON q.turma_id = t.id
+            turmas t
+        LEFT JOIN
+            matriculas m ON t.id = m.turma_id
+        GROUP BY
+            t.id, t.nome, t.descricao
         ORDER BY
-        t.nome ASC   
+            t.nome ASC
+
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
